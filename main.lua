@@ -227,7 +227,7 @@ local function pular_vezes(quantidade)
 				apenas_pular.BackgroundColor3 = Color3.fromRGB(255, 85, 0)
 			end
 			humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
-			task.wait(0.5)
+			task.wait(2)
 		end
 		apenas_pular.BackgroundColor3 = Color3.fromRGB(255, 85, 0)
 		
