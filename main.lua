@@ -1,5 +1,3 @@
-
-
 local Players = game:GetService("Players")
 local TextChatService = game:GetService("TextChatService")
 local UserInputService = game:GetService("UserInputService")
@@ -11,7 +9,6 @@ gui.Name = "ContadorGUI"
 gui.Parent = player:WaitForChild("PlayerGui")
 gui.ResetOnSpawn = false
 
-
 local frame = Instance.new("Frame", gui)
 frame.Size = UDim2.fromScale(0.25, 0.25)
 frame.Position = UDim2.fromScale(0.375, 0.35)
@@ -21,12 +18,10 @@ frame.Active = true
 
 Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 16)
 
-
 local topBar = Instance.new("Frame", frame)
 topBar.Size = UDim2.fromScale(1, 0.2)
 topBar.BackgroundTransparency = 1
 topBar.Active = true
-
 
 local title = Instance.new("TextLabel", topBar)
 title.Text = "JJs AUTOMÁTICO!"
@@ -45,7 +40,6 @@ minimizeBtn.TextColor3 = Color3.new(1,1,1)
 minimizeBtn.Font = Enum.Font.GothamBold
 minimizeBtn.TextScaled = true
 
-
 local input = Instance.new("TextBox", frame)
 input.PlaceholderText = "Até quanto contar?"
 input.Size = UDim2.fromScale(0.8, 0.2)
@@ -54,7 +48,6 @@ input.TextScaled = true
 input.Font = Enum.Font.Gotham
 input.BackgroundColor3 = Color3.fromRGB(50,50,50)
 input.TextColor3 = Color3.new(1,1,1)
-
 
 local startBtn = Instance.new("TextButton", frame)
 startBtn.Text = "INICIAR"
@@ -72,7 +65,6 @@ stopBtn.BackgroundColor3 = Color3.fromRGB(170,0,0)
 stopBtn.TextScaled = true
 stopBtn.Font = Enum.Font.GothamBold
 
-
 local icon = Instance.new("TextButton", gui)
 icon.Size = UDim2.fromScale(0.07, 0.1)
 icon.Position = UDim2.fromScale(0.02, 0.8)
@@ -84,19 +76,35 @@ icon.Font = Enum.Font.GothamBold
 icon.TextColor3 = Color3.new(1,1,1)
 Instance.new("UICorner", icon).CornerRadius = UDim.new(1,0)
 
+-- ================= DRAG PC + MOBILE =================
+local dragging = false
+local dragStart
+local startPos
 
-local dragging, dragStart, startPos
+local function iniciarDrag(input)
+	dragging = true
+	dragStart = input.Position
+	startPos = frame.Position
+
+	input.Changed:Connect(function()
+		if input.UserInputState == Enum.UserInputState.End then
+			dragging = false
+		end
+	end)
+end
 
 topBar.InputBegan:Connect(function(input)
-	if input.UserInputType == Enum.UserInputType.MouseButton1 then
-		dragging = true
-		dragStart = input.Position
-		startPos = frame.Position
+	if input.UserInputType == Enum.UserInputType.MouseButton1
+	or input.UserInputType == Enum.UserInputType.Touch then
+		iniciarDrag(input)
 	end
 end)
 
 UserInputService.InputChanged:Connect(function(input)
-	if dragging and input.UserInputType == Enum.UserInputType.MouseMovement then
+	if dragging and (
+		input.UserInputType == Enum.UserInputType.MouseMovement
+		or input.UserInputType == Enum.UserInputType.Touch
+	) then
 		local delta = input.Position - dragStart
 		frame.Position = UDim2.new(
 			startPos.X.Scale,
@@ -107,13 +115,7 @@ UserInputService.InputChanged:Connect(function(input)
 	end
 end)
 
-UserInputService.InputEnded:Connect(function(input)
-	if input.UserInputType == Enum.UserInputType.MouseButton1 then
-		dragging = false
-	end
-end)
-
-
+-- ================= MINIMIZAR =================
 minimizeBtn.MouseButton1Click:Connect(function()
 	frame.Visible = false
 	icon.Visible = true
@@ -124,13 +126,14 @@ icon.MouseButton1Click:Connect(function()
 	icon.Visible = false
 end)
 
-
+-- ================= LÓGICA =================
 local rodando = false
 
 local unidades = {"ZERO","UM","DOIS","TRÊS","QUATRO","CINCO","SEIS","SETE","OITO","NOVE"}
 local especiais = {"DEZ","ONZE","DOZE","TREZE","QUATORZE","QUINZE","DEZESSEIS","DEZESSETE","DEZOITO","DEZENOVE"}
 local dezenas = {"","","VINTE","TRINTA","QUARENTA","CINQUENTA","SESSENTA","SETENTA","OITENTA","NOVENTA"}
 local centenas = {"","CENTO","DUZENTOS","TREZENTOS","QUATROCENTOS","QUINHENTOS","SEISCENTOS","SETECENTOS","OITOCENTOS","NOVECENTOS"}
+
 local function porExtenso(n)
 	if n == 100 then return "CEM" end
 	if n < 10 then return unidades[n+1] end
