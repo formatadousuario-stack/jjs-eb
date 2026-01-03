@@ -227,7 +227,7 @@ local function pular_vezes(quantidade)
 				apenas_pular.BackgroundColor3 = Color3.fromRGB(255, 85, 0)
 			end
 			humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
-			task.wait(2)
+			task.wait(0.90)
 		end
 		apenas_pular.BackgroundColor3 = Color3.fromRGB(255, 85, 0)
 		
@@ -262,7 +262,15 @@ startBtn.MouseButton1Click:Connect(function()
 					apenas_jump = false
 					apenas_pular.BackgroundColor3 = Color3.fromRGB(255, 85, 0)
 				end
-				task.wait(3)
+				if UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled then
+					task.wait(5)
+					print("PC!!!")	
+				elseif UserInputService.KeyboardEnabled then
+					task.wait(4)
+					
+				elseif UserInputService.GamepadEnabled then
+					task.wait(7)
+				end
 			end
 		end)
 	end
