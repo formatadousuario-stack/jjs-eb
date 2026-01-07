@@ -17,7 +17,7 @@ gui.Parent = player:WaitForChild("PlayerGui")
 gui.ResetOnSpawn = false
 
 local frame = Instance.new("Frame", gui)
-frame.Size = UDim2.fromScale(0.25, 0.6)
+frame.Size = UDim2.fromScale(0.29, 0.6)
 frame.Position = UDim2.fromScale(0.375, 0.2)
 frame.BackgroundColor3 = Color3.fromRGB(30,30,30)
 frame.BorderSizePixel = 0
@@ -33,7 +33,7 @@ topBar.Active = true
 local title = Instance.new("TextLabel", topBar)
 title.Size = UDim2.fromScale(0.8, 1)
 title.BackgroundTransparency = 1
-title.Text = "JJs AUTOMÁTICO!"
+title.Text = "JJs AUTOMÁTICO! v1.0"
 title.TextColor3 = Color3.new(1,1,1)
 title.Font = Enum.Font.GothamBold
 title.TextScaled = true
@@ -214,26 +214,35 @@ local function enviarChat(msg)
 end
 
 local function pular_vezes(quantidade)
-	if (apenas_jump == true) then
-		local character = player.Character or player.CharacterAdded:Wait()
-		local humanoid = character:WaitForChild("Humanoid")
+	if not apenas_jump then return end
 
-		for i = 1, quantidade do
-			if (apenas_jump == false or rodando == false) then
-				break
-				
-			end
-			if (pular_jump == true) then
-				apenas_pular.BackgroundColor3 = Color3.fromRGB(255, 85, 0)
-			end
-			humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
-			task.wait(0.90)
+	local character = player.Character or player.CharacterAdded:Wait()
+	local humanoid = character:WaitForChild("Humanoid")
+
+	for i = 1, quantidade do
+		if not apenas_jump or not rodando then
+			break
 		end
-		apenas_pular.BackgroundColor3 = Color3.fromRGB(255, 85, 0)
-		
+
+		if pular_jump then
+			apenas_pular.BackgroundColor3 = Color3.fromRGB(170,0,0)
+		end
+
+		-- dá o pulo
+		humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+
+		-- espera sair do chão
+		repeat
+			task.wait()
+		until humanoid.FloorMaterial == Enum.Material.Air
+
+		-- espera cair no chão
+		repeat
+			task.wait()
+		until humanoid.FloorMaterial ~= Enum.Material.Air
 	end
-	
-	
+
+	apenas_pular.BackgroundColor3 = Color3.fromRGB(255, 85, 0)
 end
 
 startBtn.MouseButton1Click:Connect(function()
@@ -263,13 +272,16 @@ startBtn.MouseButton1Click:Connect(function()
 					apenas_pular.BackgroundColor3 = Color3.fromRGB(255, 85, 0)
 				end
 				if UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled then
-					task.wait(5)
-					print("PC!!!")	
+					task.wait(3.4)
+					print("MOBILE!")	
 				elseif UserInputService.KeyboardEnabled then
-					task.wait(4)
+					task.wait(3)
+					print("PC")
 					
 				elseif UserInputService.GamepadEnabled then
-					task.wait(7)
+					task.wait(5)
+					print("CONSOLE")
+				
 				end
 			end
 		end)
