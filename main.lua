@@ -1,4 +1,8 @@
-
+--==================================================
+-- MOD MENU FRAMEWORK | CLEAN & PROFISSIONAL
+-- Autor: Você
+-- Base: GUI escalável para Mod Menu
+--==================================================
 
 --// SERVICES
 local Players = game:GetService("Players")
@@ -238,12 +242,8 @@ Corner2.Parent = jjs
 Corner2.CornerRadius = UDim.new(0, 8)
 
 jjs.MouseButton1Click:Connect(function()
-		loadstring(game:HttpGet(
-			"https://raw.githubusercontent.com/formatadousuario-stack/jjs-script/refs/heads/main/main.lua"
-		))()
-
-		Main.Visible = false
-end)
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/formatadousuario-stack/jjs-script/refs/heads/main/main.lua"))()
+	Main.Visible = false
 end)
 
 
