@@ -1,9 +1,3 @@
---==================================================
--- MOD MENU FRAMEWORK | CLEAN & PROFISSIONAL
--- Autor: Você
--- Base: GUI escalável para Mod Menu
---==================================================
-
 --// SERVICES
 local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
