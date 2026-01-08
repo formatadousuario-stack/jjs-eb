@@ -256,7 +256,7 @@ local aviso = Instance.new("TextLabel")
 aviso.Parent = principal
 aviso.Size = UDim2.new(0.9, 0, 0, 45)
 aviso.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
-aviso.Text = "Este Mod Menu foi desenvolvido com foco em organização, desempenho e facilidade de expansão.Caso você encontre algum problema, bug ou tenha dúvidas sobre o funcionamento do menu, entre em contato com Danivinii para obter suporte ou orientações."
+aviso.Text = "Este Mod Menu foi desenvolvido com foco em oferecer praticidade e compatibilidade com diferentes experiências e jogos, facilitando a utilização de diversos scripts em um único lugar."
 aviso.TextColor3 = Color3.fromRGB(255,255,255)
 aviso.Font = Enum.Font.Gotham
 aviso.TextScaled = true
@@ -265,4 +265,34 @@ aviso.BorderSizePixel = 0
 local Corner = Instance.new("UICorner")
 Corner.Parent = aviso
 Corner.CornerRadius = UDim.new(0, 8)
+
+
+local aviso2 = Instance.new("TextLabel")
+aviso2.Parent = principal
+aviso2.Size = UDim2.new(0.9, 0, 0, 45)
+aviso2.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+aviso2.Text = "O projeto encontra-se em constante desenvolvimento, com novos scripts e funcionalidades sendo criados e aprimorados regularmente."
+aviso2.TextColor3 = Color3.fromRGB(255,255,255)
+aviso2.Font = Enum.Font.Gotham
+aviso2.TextScaled = true
+aviso2.BorderSizePixel = 0
+
+local Corner2 = Instance.new("UICorner")
+Corner2.Parent = aviso2
+Corner2.CornerRadius = UDim.new(0, 8)
+
+
+local aviso3 = Instance.new("TextLabel")
+aviso3.Parent = principal
+aviso3.Size = UDim2.new(0.9, 0, 0, 45)
+aviso3.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+aviso3.Text = "Caso encontre qualquer problema, bug ou tenha dúvidas sobre o funcionamento do menu, entre em contato com Danivinii para suporte, feedback ou orientações."
+aviso3.TextColor3 = Color3.fromRGB(255,255,255)
+aviso3.Font = Enum.Font.Gotham
+aviso3.TextScaled = true
+aviso3.BorderSizePixel = 0
+
+local Corner3 = Instance.new("UICorner")
+Corner3.Parent = aviso2
+Corner3.CornerRadius = UDim.new(0, 8)
 
