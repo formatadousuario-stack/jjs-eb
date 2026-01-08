@@ -1,311 +1,269 @@
--- ================= SERVICES ================= -> ;)
+--==================================================
+-- MOD MENU FRAMEWORK | CLEAN & PROFISSIONAL
+-- Autor: Você
+-- Base: GUI escalável para Mod Menu
+--==================================================
+
+--// SERVICES
 local Players = game:GetService("Players")
-local TextChatService = game:GetService("TextChatService")
 local UserInputService = game:GetService("UserInputService")
-local player = Players.LocalPlayer
 
--- ================= VARS =================
-local jump = false
-local rodando = false
-local apenas_jump = false
+--// PLAYER
+local Player = Players.LocalPlayer
+
+--==================================================
+-- GUI BASE
+--==================================================
+
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "ModMenu"
+ScreenGui.ResetOnSpawn = false
+ScreenGui.IgnoreGuiInset = true
+ScreenGui.Parent = Player:WaitForChild("PlayerGui")
+
+--==================================================
+-- MAIN CONTAINER
+--==================================================
+
+local Main = Instance.new("Frame")
+Main.Name = "Main"
+Main.Parent = ScreenGui
+Main.AnchorPoint = Vector2.new(0.5, 0.5)
+Main.Position = UDim2.fromScale(0.5, 0.5)
+Main.Size = UDim2.fromScale(0.45, 0.6)
+Main.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+Main.BorderSizePixel = 0
+Main.Active = true
+Main.Draggable = true
+
+local MainCorner = Instance.new("UICorner")
+MainCorner.CornerRadius = UDim.new(0, 14)
+MainCorner.Parent = Main
 
 
--- ================= GUI =================
-local gui = Instance.new("ScreenGui")
-gui.Name = "ContadorGUI"
-gui.Parent = player:WaitForChild("PlayerGui")
-gui.ResetOnSpawn = false
 
-local frame = Instance.new("Frame", gui)
-frame.Size = UDim2.fromScale(0.23, 0.5)
-frame.Position = UDim2.fromScale(0.375, 0.2)
-frame.BackgroundColor3 = Color3.fromRGB(30,30,30)
-frame.BorderSizePixel = 0
-frame.Active = true
-Instance.new("UICorner", frame).CornerRadius = UDim.new(0,16)
 
--- ================= TOP BAR =================
-local topBar = Instance.new("Frame", frame)
-topBar.Size = UDim2.fromScale(1, 0.15)
-topBar.BackgroundTransparency = 1
-topBar.Active = true
+--==================================================
+-- TOP BAR
+--==================================================
 
-local title = Instance.new("TextLabel", topBar)
-title.Size = UDim2.fromScale(0.7, 1)
-title.BackgroundTransparency = 1
-title.Text = "JJs AUTOMÁTICO!"
-title.TextColor3 = Color3.new(1,1,1)
-title.Font = Enum.Font.GothamBold
-title.TextScaled = true
+local TopBar = Instance.new("Frame")
+TopBar.Name = "TopBar"
+TopBar.Parent = Main
+TopBar.Size = UDim2.new(1, 0, 0.12, 0)
+TopBar.BackgroundColor3 = Color3.fromRGB(10, 10, 10)
+TopBar.BorderSizePixel = 0
 
-local minimizeBtn = Instance.new("TextButton", topBar)
-minimizeBtn.Size = UDim2.fromScale(0.15, 1)
-minimizeBtn.Position = UDim2.fromScale(0.7, 0)
-minimizeBtn.Text = "–"
-minimizeBtn.BackgroundTransparency = 1
-minimizeBtn.TextColor3 = Color3.new(1,1,1)
-minimizeBtn.Font = Enum.Font.GothamBold
-minimizeBtn.TextScaled = true
+local TopCorner = Instance.new("UICorner")
+TopCorner.CornerRadius = UDim.new(0, 14)
+TopCorner.Parent = TopBar
 
-local fechar = Instance.new("TextButton", topBar)
-fechar.Size = UDim2.fromScale(0.15, 1)
-fechar.Position = UDim2.fromScale(0.85, 0)
-fechar.Text = "x"
-fechar.BackgroundTransparency = 1
-fechar.TextColor3 = Color3.new(1,1,1)
-fechar.Font = Enum.Font.GothamBold
-fechar.TextScaled = true
+-- CORREÇÃO VISUAL (cantos inferiores retos)
+local Fix = Instance.new("Frame")
+Fix.Parent = TopBar
+Fix.Position = UDim2.new(0,0,1,-14)
+Fix.Size = UDim2.new(1,0,0,14)
+Fix.BackgroundColor3 = TopBar.BackgroundColor3
+Fix.BorderSizePixel = 0
 
--- ================= CONTENT =================
-local content = Instance.new("Frame", frame)
-content.Size = UDim2.new(1, 0, 1, -topBar.AbsoluteSize.Y - 80)
-content.Position = UDim2.fromScale(0, 0.15)
-content.BackgroundTransparency = 1
+local CloseButton = Instance.new("TextButton")
+CloseButton.Parent = TopBar -- ou qualquer aba
+CloseButton.Size = UDim2.new(0, 40, 0, 40)
+CloseButton.Position = UDim2.new(1, -50, 0.5, -20)
+CloseButton.Text = "X"
+CloseButton.Font = Enum.Font.GothamBold
+CloseButton.TextSize = 18
+CloseButton.TextColor3 = Color3.fromRGB(255, 90, 150)
+CloseButton.BackgroundColor3 = Color3.fromRGB(15,15,15)
+CloseButton.BorderSizePixel = 0
 
-local contentLayout = Instance.new("UIListLayout", content)
-contentLayout.Padding = UDim.new(0, 14)
-contentLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
-
--- ================= INPUT =================
-local input = Instance.new("TextBox", content)
-input.Size = UDim2.fromScale(0.85, 0.16)
-input.PlaceholderText = "Até quanto contar?"
-input.TextScaled = true
-input.Font = Enum.Font.Gotham
-input.BackgroundColor3 = Color3.fromRGB(50,50,50)
-input.TextColor3 = Color3.new(1,1,1)
-Instance.new("UICorner", input).CornerRadius = UDim.new(0,10)
-
--- ================= START =================
-local startBtn = Instance.new("TextButton", content)
-startBtn.Size = UDim2.fromScale(0.85, 0.16)
-startBtn.Text = "INICIAR"
-startBtn.BackgroundColor3 = Color3.fromRGB(0,170,0)
-startBtn.TextScaled = true
-startBtn.Font = Enum.Font.GothamBold
-Instance.new("UICorner", startBtn).CornerRadius = UDim.new(0,10)
-
--- ================= APENAS PULAR ==========
-local apenas_pular = Instance.new("TextButton", content)
-apenas_pular.Size = UDim2.fromScale(0.85, 0.16)
-apenas_pular.Text = "APENAS PULAR"
-apenas_pular.BackgroundColor3 = Color3.fromRGB(255, 85, 0)
-apenas_pular.TextScaled = true
-apenas_pular.Font = Enum.Font.GothamBold
-Instance.new("UICorner", apenas_pular).CornerRadius = UDim.new(0,10)
-
--- ================= BOTTOM BAR =================
-local bottomBar = Instance.new("Frame", frame)
-bottomBar.Size = UDim2.new(1, -20, 0, 60)
-bottomBar.Position = UDim2.new(0, 10, 1, -70)
-bottomBar.BackgroundTransparency = 1
-
-local stopBtn = Instance.new("TextButton", bottomBar)
-stopBtn.Size = UDim2.new(0.48, 0, 1, 0)
-stopBtn.Position = UDim2.new(0, 0, 0, 0)
-stopBtn.Text = "PARAR"
-stopBtn.BackgroundColor3 = Color3.fromRGB(170,0,0)
-stopBtn.TextScaled = true
-stopBtn.Font = Enum.Font.GothamBold
-Instance.new("UICorner", stopBtn).CornerRadius = UDim.new(0,10)
-
-local pular = Instance.new("TextButton", bottomBar)
-pular.Size = UDim2.new(0.48, 0, 1, 0)
-pular.Position = UDim2.new(0.52, 0, 0, 0)
-pular.Text = "PULAR"
-pular.BackgroundColor3 = Color3.fromRGB(8,8,170)
-pular.TextScaled = true
-pular.Font = Enum.Font.GothamBold
-Instance.new("UICorner", pular).CornerRadius = UDim.new(0,10)
-
--- ================= ICON =================
-local icon = Instance.new("TextButton", gui)
-icon.Size = UDim2.fromScale(0.07, 0.1)
-icon.Position = UDim2.fromScale(0.02, 0.8)
-icon.Text = "🔢"
-icon.TextScaled = true
-icon.Visible = false
-icon.BackgroundColor3 = Color3.fromRGB(30,30,30)
-icon.TextColor3 = Color3.new(1,1,1)
-icon.Font = Enum.Font.GothamBold
-Instance.new("UICorner", icon).CornerRadius = UDim.new(1,0)
-
--- ================= DRAG =================
-local dragging, dragStart, startPos
-
-topBar.InputBegan:Connect(function(input)
-	if input.UserInputType == Enum.UserInputType.MouseButton1
-		or input.UserInputType == Enum.UserInputType.Touch then
-		dragging = true
-		dragStart = input.Position
-		startPos = frame.Position
-	end
+CloseButton.MouseButton1Click:Connect(function()
+	Main.Visible = false
 end)
 
-UserInputService.InputChanged:Connect(function(input)
-	if dragging and (input.UserInputType == Enum.UserInputType.MouseMovement
-		or input.UserInputType == Enum.UserInputType.Touch) then
-		local delta = input.Position - dragStart
-		frame.Position = UDim2.new(
-			startPos.X.Scale,
-			startPos.X.Offset + delta.X,
-			startPos.Y.Scale,
-			startPos.Y.Offset + delta.Y
-		)
-	end
-end)
+--==================================================
+-- TITLE
+--==================================================
 
-UserInputService.InputEnded:Connect(function()
-	dragging = false
-end)
+local Title = Instance.new("TextLabel")
+Title.Name = "Title"
+Title.Parent = TopBar
+Title.Size = UDim2.new(1, 0, 1, 0)
+Title.BackgroundTransparency = 1
+Title.Text = "By Danivinii"
+Title.Font = Enum.Font.GothamBold
+Title.TextScaled = true
+Title.TextColor3 = Color3.fromRGB(255, 60, 150) -- ROSA
+Title.TextXAlignment = Enum.TextXAlignment.Center
+Title.TextYAlignment = Enum.TextYAlignment.Center
 
--- ================= APENAS PULAR ================
-apenas_pular.MouseButton1Click:Connect(function()
-	if (apenas_jump == true) then
-		apenas_jump = false
-		apenas_pular.BackgroundColor3 = Color3.fromRGB(255, 85, 0)
-	else
-		apenas_jump = true
-		apenas_pular.BackgroundColor3 = Color3.fromRGB(170, 0, 0)
-	end
-end)
+--==================================================
+-- BODY
+--==================================================
 
--- ================= PULAR TOGGLE =================
-pular.MouseButton1Click:Connect(function()
-	jump = not jump
-	pular.BackgroundColor3 = jump
-		and Color3.fromRGB(170,0,0)
-		or Color3.fromRGB(8,8,170)
-end)
+local Body = Instance.new("Frame")
+Body.Name = "Body"
+Body.Parent = Main
+Body.Position = UDim2.new(0, 0, 0.12, 0)
+Body.Size = UDim2.new(1, 0, 0.88, 0)
+Body.BackgroundTransparency = 1
 
-fechar.MouseButton1Click:Connect(function()
-	frame.Visible = false
-	icon.Visible = false
-end)
+--==================================================
+-- SIDEBAR (ABAS)
+--==================================================
 
--- ================= MINIMIZE =================
-minimizeBtn.MouseButton1Click:Connect(function()
-	frame.Visible = false
-	icon.Visible = true
-end)
+local Sidebar = Instance.new("Frame")
+Sidebar.Name = "Sidebar"
+Sidebar.Parent = Body
+Sidebar.Size = UDim2.new(0.22, 0, 1, 0)
+Sidebar.BackgroundColor3 = Color3.fromRGB(8, 8, 8)
+Sidebar.BorderSizePixel = 0
 
-icon.MouseButton1Click:Connect(function()
-	frame.Visible = true
-	icon.Visible = false
-end)
+local SideLayout = Instance.new("UIListLayout")
+SideLayout.Parent = Sidebar
+SideLayout.Padding = UDim.new(0, 8)
+SideLayout.HorizontalAlignment = Enum.HorizontalAlignment.Center
 
--- ================= LÓGICA =================
-local unidades = {"ZERO","UM","DOIS","TRÊS","QUATRO","CINCO","SEIS","SETE","OITO","NOVE"}
-local especiais = {"DEZ","ONZE","DOZE","TREZE","QUATORZE","QUINZE","DEZESSEIS","DEZESSETE","DEZOITO","DEZENOVE"}
-local dezenas = {"","","VINTE","TRINTA","QUARENTA","CINQUENTA","SESSENTA","SETENTA","OITENTA","NOVENTA"}
-local centenas = {"","CENTO","DUZENTOS","TREZENTOS","QUATROCENTOS","QUINHENTOS","SEISCENTOS","SETECENTOS","OITOCENTOS","NOVECENTOS"}
+local SidePadding = Instance.new("UIPadding")
+SidePadding.Parent = Sidebar
+SidePadding.PaddingTop = UDim.new(0, 10)
 
-local function porExtenso(n)
-	if n == 100 then return "CEM" end
-	if n < 10 then return unidades[n+1] end
-	if n < 20 then return especiais[n-9] end
-	if n < 100 then
-		local d = dezenas[math.floor(n/10)+1]
-		local u = n % 10
-		return u > 0 and d.." E "..unidades[u+1] or d
-	end
-	if n < 1000 then
-		local c = centenas[math.floor(n/100)+1]
-		local r = n % 100
-		return r > 0 and c.." E "..porExtenso(r) or c
-	end
-	return tostring(n)
-end
+--==================================================
+-- CONTENT AREA (PÁGINAS)
+--==================================================
 
-local function pular_jump()
-	local character = player.Character or player.CharacterAdded:Wait()
-	local humanoid = character:WaitForChild("Humanoid")
-	humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
-end
+local Content = Instance.new("Frame")
+Content.Name = "Content"
+Content.Parent = Body
+Content.Position = UDim2.new(0.22, 0, 0, 0)
+Content.Size = UDim2.new(0.78, 0, 1, 0)
+Content.BackgroundTransparency = 1
 
-local function enviarChat(msg)
-	TextChatService.TextChannels.RBXGeneral:SendAsync(msg)
-end
 
-local function pular_vezes(quantidade)
-	if not apenas_jump then return end
 
-	local character = player.Character or player.CharacterAdded:Wait()
-	local humanoid = character:WaitForChild("Humanoid")
 
-	for i = 1, quantidade do
-		if not apenas_jump or not rodando then
-			break
-		end
 
-		if pular_jump then
-			apenas_pular.BackgroundColor3 = Color3.fromRGB(170,0,0)
-		end
 
-		-- dá o pulo
-		humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
+--==================================================
+-- FRAMEWORK
+--==================================================
 
-		-- espera sair do chão
-		repeat
-			task.wait()
-		until humanoid.FloorMaterial == Enum.Material.Air
+local UI = {}
+UI.Tabs = {}
 
-		-- espera cair no chão
-		repeat
-			task.wait()
-		until humanoid.FloorMaterial ~= Enum.Material.Air
-	end
+--==================================================
+-- FUNÇÃO: CRIAR ABA
+--==================================================
+-- name: Nome da aba
+-- Retorna: Página (ScrollingFrame)
+--==================================================
 
-	apenas_pular.BackgroundColor3 = Color3.fromRGB(255, 85, 0)
-end
+function UI:CreateTab(name)
 
-startBtn.MouseButton1Click:Connect(function()
-	local limite = tonumber(input.Text)
-	if not limite then return end
-	rodando = true
+	-- BOTÃO DA ABA
+	local TabButton = Instance.new("TextButton")
+	TabButton.Name = name .. "_Tab"
+	TabButton.Parent = Sidebar
+	TabButton.Size = UDim2.new(0.9, 0, 0, 42)
+	TabButton.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+	TabButton.Text = name
+	TabButton.Font = Enum.Font.Gotham
+	TabButton.TextScaled = true
+	TabButton.TextColor3 = Color3.fromRGB(200, 200, 200)
+	TabButton.BorderSizePixel = 0
 
-	if (apenas_jump == true) then
-		if (jump == true) then
-			jump = false
-			pular.BackgroundColor3 = Color3.fromRGB(8,8, 170)
-			local quantidade = tonumber(input.Text)
-			pular_vezes(quantidade)
-		else
-			local quantidade = tonumber(input.Text)
-			pular_vezes(quantidade)
-		end
+	local TabCorner = Instance.new("UICorner")
+	TabCorner.CornerRadius = UDim.new(0, 8)
+	TabCorner.Parent = TabButton
 
-	else
-		task.spawn(function()
-			for i = 1, limite do
-				if not rodando then break end
-				enviarChat(porExtenso(i).."!")
-				if jump then pular_jump() end
-				if (apenas_jump == true) then
-					apenas_jump = false
-					apenas_pular.BackgroundColor3 = Color3.fromRGB(255, 85, 0)
-				end
-				if UserInputService.TouchEnabled and not UserInputService.KeyboardEnabled then
-					task.wait(3.4)
-					print("MOBILE!")	
-				elseif UserInputService.KeyboardEnabled then
-					task.wait(3)
-					print("PC")
+	-- PÁGINA
+	local Page = Instance.new("ScrollingFrame")
+	Page.Name = name .. "_Page"
+	Page.Parent = Content
+	Page.Size = UDim2.new(1, 0, 1, 0)
+	Page.CanvasSize = UDim2.new(0, 0, 0, 0)
+	Page.ScrollBarImageTransparency = 1
+	Page.Visible = false
+	Page.BackgroundTransparency = 1
 
-				elseif UserInputService.GamepadEnabled then
-					task.wait(5)
-					print("CONSOLE")
+	local PageLayout = Instance.new("UIListLayout")
+	PageLayout.Parent = Page
+	PageLayout.Padding = UDim.new(0, 10)
 
-				end
+	local PagePadding = Instance.new("UIPadding")
+	PagePadding.Parent = Page
+	PagePadding.PaddingTop = UDim.new(0, 12)
+	PagePadding.PaddingLeft = UDim.new(0, 12)
+
+	-- AUTO RESIZE
+	PageLayout:GetPropertyChangedSignal("AbsoluteContentSize"):Connect(function()
+		Page.CanvasSize = UDim2.new(0, 0, 0, PageLayout.AbsoluteContentSize.Y + 20)
+	end)
+
+	-- CLICK
+	TabButton.MouseButton1Click:Connect(function()
+		for _, v in pairs(Content:GetChildren()) do
+			if v:IsA("ScrollingFrame") then
+				v.Visible = false
 			end
-		end)
-	end
+		end
+		Page.Visible = true
+	end)
+
+	UI.Tabs[name] = Page
+	return Page
+end
+
+
+
+
+--==================================================
+-- EXEMPLO DE CRIAÇÃO DE ABAS (SEM FUNÇÕES)
+-- APAGUE SE QUISER
+--==================================================
+
+local eb = UI:CreateTab("EB")
+eb.Visible = true
+
+--# JJS
+
+local jjs = Instance.new("TextButton")
+jjs.Parent = eb
+jjs.Size = UDim2.new(0.9, 0, 0, 45)
+jjs.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+jjs.Text = "JJs AUTOMÁTICO v1.0"
+jjs.TextColor3 = Color3.fromRGB(255,255,255)
+jjs.Font = Enum.Font.Gotham
+jjs.TextScaled = true
+jjs.BorderSizePixel = 0
+
+local Corner2 = Instance.new("UICorner")
+Corner2.Parent = jjs
+Corner2.CornerRadius = UDim.new(0, 8)
+
+jjs.MouseButton1Click:Connect(function()
+	local loadMenu = loadstring(game:HttpGet("https://raw.githubusercontent.com/formatadousuario-stack/jjs-script/refs/heads/main/main.lua"))()
+	loadMenu()
+	Main.Visible = false
 end)
 
-stopBtn.MouseButton1Click:Connect(function()
-	rodando = false
-	jump = false
-	apenas_jump = false
-	pular.BackgroundColor3 = Color3.fromRGB(8,8,170)
-	apenas_pular.BackgroundColor3 = Color3.fromRGB(255, 85, 0)
-end)
+
+
+local principal = UI:CreateTab("Main")
+principal.Visible = true
+
+
+local aviso = Instance.new("TextLabel")
+aviso.Parent = principal
+aviso.Size = UDim2.new(0.9, 0, 0, 45)
+aviso.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+aviso.Text = "Este Mod Menu foi desenvolvido com foco em organização, desempenho e facilidade de expansão.Caso você encontre algum problema, bug ou tenha dúvidas sobre o funcionamento do menu, entre em contato com Danivinii para obter suporte ou orientações."
+aviso.TextColor3 = Color3.fromRGB(255,255,255)
+aviso.Font = Enum.Font.Gotham
+aviso.TextScaled = true
+aviso.BorderSizePixel = 0
+
+local Corner = Instance.new("UICorner")
+Corner.Parent = aviso
+Corner.CornerRadius = UDim.new(0, 8)
+
