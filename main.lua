@@ -1,3 +1,9 @@
+--==================================================
+-- MOD MENU FRAMEWORK | CLEAN & PROFISSIONAL
+-- Autor: Você
+-- Base: GUI escalável para Mod Menu
+--==================================================
+
 --// SERVICES
 local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
@@ -10,7 +16,7 @@ local Player = Players.LocalPlayer
 --==================================================
 
 local ScreenGui = Instance.new("ScreenGui")
-ScreenGui.Name = "ModMenu"
+ScreenGui.Name = "Configurações"
 ScreenGui.ResetOnSpawn = false
 ScreenGui.IgnoreGuiInset = true
 ScreenGui.Parent = Player:WaitForChild("PlayerGui")
