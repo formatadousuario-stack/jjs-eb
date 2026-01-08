@@ -17,7 +17,7 @@ gui.Parent = player:WaitForChild("PlayerGui")
 gui.ResetOnSpawn = false
 
 local frame = Instance.new("Frame", gui)
-frame.Size = UDim2.fromScale(0.29, 0.6)
+frame.Size = UDim2.fromScale(0.23, 0.5)
 frame.Position = UDim2.fromScale(0.375, 0.2)
 frame.BackgroundColor3 = Color3.fromRGB(30,30,30)
 frame.BorderSizePixel = 0
@@ -31,7 +31,7 @@ topBar.BackgroundTransparency = 1
 topBar.Active = true
 
 local title = Instance.new("TextLabel", topBar)
-title.Size = UDim2.fromScale(0.8, 1)
+title.Size = UDim2.fromScale(0.7, 1)
 title.BackgroundTransparency = 1
 title.Text = "JJs AUTOMÁTICO!"
 title.TextColor3 = Color3.new(1,1,1)
@@ -39,13 +39,22 @@ title.Font = Enum.Font.GothamBold
 title.TextScaled = true
 
 local minimizeBtn = Instance.new("TextButton", topBar)
-minimizeBtn.Size = UDim2.fromScale(0.2, 1)
-minimizeBtn.Position = UDim2.fromScale(0.8, 0)
+minimizeBtn.Size = UDim2.fromScale(0.15, 1)
+minimizeBtn.Position = UDim2.fromScale(0.7, 0)
 minimizeBtn.Text = "–"
 minimizeBtn.BackgroundTransparency = 1
 minimizeBtn.TextColor3 = Color3.new(1,1,1)
 minimizeBtn.Font = Enum.Font.GothamBold
 minimizeBtn.TextScaled = true
+
+local fechar = Instance.new("TextButton", topBar)
+fechar.Size = UDim2.fromScale(0.15, 1)
+fechar.Position = UDim2.fromScale(0.85, 0)
+fechar.Text = "x"
+fechar.BackgroundTransparency = 1
+fechar.TextColor3 = Color3.new(1,1,1)
+fechar.Font = Enum.Font.GothamBold
+fechar.TextScaled = true
 
 -- ================= CONTENT =================
 local content = Instance.new("Frame", frame)
@@ -169,6 +178,11 @@ pular.MouseButton1Click:Connect(function()
 		or Color3.fromRGB(8,8,170)
 end)
 
+fechar.MouseButton1Click:Connect(function()
+	frame.Visible = false
+	icon.Visible = false
+end)
+
 -- ================= MINIMIZE =================
 minimizeBtn.MouseButton1Click:Connect(function()
 	frame.Visible = false
@@ -249,7 +263,7 @@ startBtn.MouseButton1Click:Connect(function()
 	local limite = tonumber(input.Text)
 	if not limite then return end
 	rodando = true
-	
+
 	if (apenas_jump == true) then
 		if (jump == true) then
 			jump = false
@@ -260,7 +274,7 @@ startBtn.MouseButton1Click:Connect(function()
 			local quantidade = tonumber(input.Text)
 			pular_vezes(quantidade)
 		end
-	
+
 	else
 		task.spawn(function()
 			for i = 1, limite do
@@ -277,11 +291,11 @@ startBtn.MouseButton1Click:Connect(function()
 				elseif UserInputService.KeyboardEnabled then
 					task.wait(3)
 					print("PC")
-					
+
 				elseif UserInputService.GamepadEnabled then
 					task.wait(5)
 					print("CONSOLE")
-				
+
 				end
 			end
 		end)
