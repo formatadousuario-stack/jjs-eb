@@ -263,7 +263,7 @@ Corner2.Parent = jjs
 Corner2.CornerRadius = UDim.new(0, 8)
 
 jjs.MouseButton1Click:Connect(function()
-	loadstring(game:HttpGet("https://raw.githubusercontent.com/formatadousuario-stack/jjs-eb/main/main.lua"))()
+	loadstring(game:HttpGet("https://raw.githubusercontent.com/formatadousuario-stack/jjs-script/refs/heads/main/main.lua"))()
 	Main.Visible = false
 end)
 
